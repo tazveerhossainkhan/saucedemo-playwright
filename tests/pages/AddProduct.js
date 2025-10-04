@@ -8,18 +8,16 @@ export default class AddProduct {
   }
 
   async addRandomProducts(count = 3) {
-    const totalProducts = await this.locate.products.count();
-    const selectedIndexes = new Set();
+    const total = await this.locate.products.count();
+    const pick = Math.min(count, total);
 
-    while (selectedIndexes.size < count) {
-      const randomIndex = getRandomNumber(1, totalProducts - 1);
-      selectedIndexes.add(randomIndex);
+    const chosen = new Set();
+    while (chosen.size < pick) {
+      chosen.add(getRandomNumber(0, total - 1)); 
     }
-
-    for (const index of selectedIndexes) {
-      await this.locate.addToCartButtons.nth(index).click();
+    for (const i of chosen) {
+      await this.locate.addToCartButtons.nth(i).click();
     }
-    await this.locate.cartIcon.click();
+    await this.locate.cartIcon.click(); 
   }
-  
 }
